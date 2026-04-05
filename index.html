@@ -1,0 +1,553 @@
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>ЧИХО AI — твой бонус за стиль</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
+      background: #0b0608;
+      color: #fff;
+      line-height: 1.4;
+    }
+
+    .wrap {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px 16px 40px;
+    }
+
+    /* карточки */
+    .card {
+      background: #140b10;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 32px;
+      padding: 24px 20px;
+      margin-bottom: 16px;
+      backdrop-filter: blur(2px);
+      transition: all 0.2s ease;
+      animation: fadeSlideUp 0.3s ease;
+    }
+
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin: 0 0 8px 0;
+      letter-spacing: -0.3px;
+      background: linear-gradient(135deg, #FFB347, #FF6B8C);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .card p {
+      color: #cbb7bf;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 60px;
+      border: none;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+      text-align: center;
+      background: #2c1a22;
+      color: #fff;
+    }
+
+    .btn.primary {
+      background: #ff315d;
+      color: white;
+      box-shadow: 0 8px 20px rgba(255, 49, 93, 0.25);
+    }
+
+    .btn.primary:active { transform: scale(0.97); background: #e61c4a; }
+    .btn.ghost {
+      background: #1e1116;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .btn.ghost:active { background: #2d1b23; }
+
+    .choice {
+      background: #1e1116;
+      border-radius: 60px;
+      padding: 14px 20px;
+      margin: 12px 0;
+      text-align: center;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 1px solid transparent;
+    }
+
+    .choice:hover { background: #2c1a24; }
+    .choice.selected {
+      background: #ff315d20;
+      border-color: #ff315d;
+      color: #ffb8c8;
+      font-weight: 600;
+      box-shadow: 0 0 8px rgba(255,49,93,0.3);
+    }
+
+    input {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 60px;
+      border: 1px solid #2e1d25;
+      background: #0f080c;
+      color: white;
+      font-size: 16px;
+      margin-top: 8px;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    input:focus {
+      border-color: #ff315d;
+      box-shadow: 0 0 0 2px rgba(255,49,93,0.3);
+    }
+
+    .code {
+      background: #1c1117;
+      border-radius: 48px;
+      padding: 14px 20px;
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-align: center;
+      font-family: monospace;
+      color: #ffd36b;
+      margin: 16px 0;
+      border: 1px dashed rgba(255,211,107,0.4);
+      word-break: break-word;
+    }
+
+    .bonus-message {
+      font-size: 15px;
+      background: #ff315d10;
+      border-radius: 24px;
+      padding: 12px;
+      text-align: center;
+      color: #ffb8cc;
+    }
+
+    .hidden { display: none; }
+
+    .flex-btns {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .flex-btns .btn { margin-top: 0; }
+
+    hr {
+      margin: 16px 0;
+      border-color: #2a1a22;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #ff315d20;
+      border-radius: 40px;
+      padding: 4px 12px;
+      font-size: 12px;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 11px;
+      color: #5e4a54;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Главный экран -->
+  <div id="home" class="card">
+    <h1>🍜 ЧИХО AI</h1>
+    <p>Выбери свой путь — получи эксклюзивный бонус-код</p>
+    <button class="btn primary" data-nav="quiz">✨ Кто ты сегодня</button>
+    <button class="btn ghost" data-nav="wok">🥡 Собери вок</button>
+    <button class="btn ghost" data-nav="photo">📸 Фото-челлендж</button>
+  </div>
+
+  <!-- Квиз: твой стиль -->
+  <div id="quiz" class="card hidden">
+    <h1>🧠 Твой вкус</h1>
+    <p>Какой стиль ближе? Выбирай смело</p>
+    <div class="choice" data-quiz="spicy">🔥 Острый & дерзкий</div>
+    <div class="choice" data-quiz="mild">🍰 Мягкий & уютный</div>
+    <div class="flex-btns">
+      <button class="btn ghost" data-nav="home">← Назад</button>
+    </div>
+  </div>
+
+  <!-- Сборщик вока -->
+  <div id="wok" class="card hidden">
+    <h1>🥢 Собери идеальный вок</h1>
+    <p>Выбери основу — получи фирменный бонус</p>
+    <div class="choice" data-wok="chicken">🍗 Курица</div>
+    <div class="choice" data-wok="beef">🥩 Говядина</div>
+    <div id="wokSelectedDisplay" style="font-size:13px; margin: 8px 0 4px; color:#cbb7bf; text-align:center;"></div>
+    <button id="finishWokBtn" class="btn primary">🏆 Получить бонус</button>
+    <div class="flex-btns" style="margin-top: 12px;">
+      <button class="btn ghost" data-nav="home">← Домой</button>
+    </div>
+  </div>
+
+  <!-- Фото -->
+  <div id="photo" class="card hidden">
+    <h1>📸 ЧИХО-кадр</h1>
+    <p>Сфотографируйся в стиле азиатского стрит-фуда или загрузи фото из галереи — и получи секретный промокод!</p>
+    <button id="photoBonusBtn" class="btn primary">🤳 Получить бонус за фото</button>
+    <div class="flex-btns">
+      <button class="btn ghost" data-nav="home">← На главную</button>
+    </div>
+  </div>
+
+  <!-- Бонусный экран (результат) -->
+  <div id="bonus" class="card hidden">
+    <h1>🎁 Твой бонус</h1>
+    <div id="bonusDescription" class="bonus-message">✨ персональный код готов</div>
+    <div class="code" id="bonusCodeDisplay">CHIHO-XXXX</div>
+    <p>Покажи этот код на кассе в любом ЧИХО или при онлайн-заказе.<br>🎟️ Действует до конца месяца.</p>
+    <div class="flex-btns">
+      <button id="extraBonusBtn" class="btn ghost">🎫 Ещё бонус</button>
+      <button class="btn ghost" data-nav="home">🏠 В меню</button>
+    </div>
+  </div>
+
+  <!-- Лид-форма для доп. бонуса -->
+  <div id="lead" class="card hidden">
+    <h1>📞 Дополнительный бонус</h1>
+    <p>Оставь номер — пришлём ещё один промокод + скидку 15% на следующий заказ</p>
+    <input type="tel" id="phoneInput" placeholder="+7 (___) ___-__-__" autocomplete="off">
+    <button id="saveLeadBtn" class="btn primary">📱 Получить код</button>
+    <div id="leadResultArea" class="hidden" style="margin-top: 18px;">
+      <div class="bonus-message">✨ Твой дополнительный код:</div>
+      <div class="code" id="leadBonusCode"></div>
+      <p style="font-size: 12px;">Скопируй или покажи на кассе</p>
+    </div>
+    <div class="flex-btns" style="margin-top: 20px;">
+      <button class="btn ghost" data-nav="home">← Домой</button>
+    </div>
+  </div>
+
+  <footer>ЧИХО AI — эмоции и вкус на максимуме 🔥</footer>
+</div>
+
+<script>
+  // ---------- Глобальные состояния ----------
+  let currentWokSelection = null;       // 'chicken' или 'beef'
+  let lastBonus = {
+    type: '',       // 'quiz', 'wok', 'photo', 'lead'
+    detail: '',
+    code: ''
+  };
+
+  // ---------- Вспомогательные функции ----------
+  function generateCode(prefix = 'CHIHO') {
+    const randomNum = Math.floor(1000 + Math.random() * 9000);
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+    const extra = chars[Math.floor(Math.random() * chars.length)];
+    return `${prefix}-${randomNum}${extra}`;
+  }
+
+  // Показать бонусную карточку с деталями
+  function showBonusScreen(flowType, detailText, rawCode = null) {
+    const bonusCard = document.getElementById('bonus');
+    const descDiv = document.getElementById('bonusDescription');
+    const codeSpan = document.getElementById('bonusCodeDisplay');
+    
+    let finalCode = rawCode || generateCode(flowType === 'lead' ? 'EXTRA' : flowType.toUpperCase());
+    let message = '';
+    
+    switch(flowType) {
+      case 'quiz':
+        if (detailText === 'spicy') message = '🔥 Острый стиль — твой код на spicy-комбо!';
+        else if (detailText === 'mild') message = '🍰 Мягкий стиль — получи нежный сет!';
+        else message = '🎭 Твой персональный стиль';
+        break;
+      case 'wok':
+        if (detailText === 'chicken') message = '🍗 Вок с курицей + бонус: напиток в подарок!';
+        else if (detailText === 'beef') message = '🥩 Вок с говядиной + удвоенные чихи-баллы!';
+        else message = '🥡 Бонус за собранный вок';
+        break;
+      case 'photo':
+        message = '📸 Креативный фото-челлендж завершён! Твой эксклюзивный код.';
+        break;
+      case 'lead':
+        message = '📞 Дополнительный бонус активирован! Спасибо, что с нами.';
+        break;
+      default: message = '🎉 Держи бонусный код!';
+    }
+    
+    descDiv.innerHTML = `✨ ${message}`;
+    codeSpan.innerText = finalCode;
+    
+    lastBonus = { type: flowType, detail: detailText, code: finalCode };
+    
+    // Сохраним код в localStorage для истории (последний)
+    localStorage.setItem('chicho_last_code', finalCode);
+    
+    // скрыть все и показать бонус
+    document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
+    bonusCard.classList.remove('hidden');
+  }
+
+  // универсальная навигация
+  function navigateTo(screenId) {
+    // сбросить выделение и промежуточные состояния при уходе со страницы вока
+    if (screenId === 'wok') {
+      resetWokSelection();
+    }
+    if (screenId === 'quiz') {
+      // снимаем выделение с квиза (если есть)
+      document.querySelectorAll('#quiz .choice').forEach(el => el.classList.remove('selected'));
+    }
+    document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
+    const target = document.getElementById(screenId);
+    if (target) target.classList.remove('hidden');
+  }
+  
+  // сброс выбора вока
+  function resetWokSelection() {
+    currentWokSelection = null;
+    const wokChoices = document.querySelectorAll('#wok .choice[data-wok]');
+    wokChoices.forEach(ch => ch.classList.remove('selected'));
+    const displayDiv = document.getElementById('wokSelectedDisplay');
+    if (displayDiv) displayDiv.innerHTML = '';
+  }
+  
+  // выбор мяса в воке (подсветка)
+  function selectWokMeat(meatType, element) {
+    // убираем выделение со всех
+    const allWokOptions = document.querySelectorAll('#wok .choice[data-wok]');
+    allWokOptions.forEach(opt => opt.classList.remove('selected'));
+    element.classList.add('selected');
+    currentWokSelection = meatType;
+    const displayDiv = document.getElementById('wokSelectedDisplay');
+    if (displayDiv) {
+      const meatName = meatType === 'chicken' ? '🍗 Курица' : '🥩 Говядина';
+      displayDiv.innerHTML = `✅ Выбрано: ${meatName}`;
+    }
+  }
+  
+  // завершить вок и получить бонус
+  function finishWokFlow() {
+    if (!currentWokSelection) {
+      // показываем уведомление
+      const displayDiv = document.getElementById('wokSelectedDisplay');
+      if (displayDiv) displayDiv.innerHTML = '⚠️ Сначала выбери основу для вока!';
+      else alert('Выбери курицу или говядину ✨');
+      return;
+    }
+    let code = generateCode('WOK');
+    if (currentWokSelection === 'chicken') code = generateCode('WOK-CHX');
+    else code = generateCode('WOK-BEEF');
+    showBonusScreen('wok', currentWokSelection, code);
+  }
+  
+  // фото бонус
+  function finishPhotoFlow() {
+    const photoCode = generateCode('PHOTO');
+    showBonusScreen('photo', 'photo', photoCode);
+  }
+  
+  // квиз выбор
+  function handleQuizChoice(style, element) {
+    // убираем выделение с других и подсвечиваем текущий
+    document.querySelectorAll('#quiz .choice').forEach(ch => ch.classList.remove('selected'));
+    element.classList.add('selected');
+    let codePrefix = style === 'spicy' ? 'SPICY' : 'SOFT';
+    const quizCode = generateCode(codePrefix);
+    showBonusScreen('quiz', style, quizCode);
+  }
+  
+  // сохранение лида + доп. бонус
+  function saveLeadAndBonus() {
+    const phoneInput = document.getElementById('phoneInput');
+    let phone = phoneInput.value.trim();
+    if (!phone) {
+      alert('📱 Введи номер телефона, чтобы получить дополнительный бонус-код');
+      return;
+    }
+    // простая валидация: хотя бы 5 символов
+    if (phone.length < 5) {
+      alert('Пожалуйста, введите корректный номер телефона');
+      return;
+    }
+    
+    // генерируем код для лида
+    const leadCode = generateCode('BONUS15');
+    // отображаем результат
+    const leadResultDiv = document.getElementById('leadResultArea');
+    const leadCodeSpan = document.getElementById('leadBonusCode');
+    leadCodeSpan.innerText = leadCode;
+    leadResultDiv.classList.remove('hidden');
+    
+    // сохраняем лид в localStorage (имитация базы)
+    let leads = [];
+    const storedLeads = localStorage.getItem('chicho_leads');
+    if (storedLeads) {
+      try { leads = JSON.parse(storedLeads); } catch(e) { leads = []; }
+    }
+    leads.push({ phone: phone, code: leadCode, date: new Date().toISOString() });
+    localStorage.setItem('chicho_leads', JSON.stringify(leads));
+    
+    // дополнительно показываем в консоли (для магазина)
+    console.log('📞 Новый лид:', phone, 'код:', leadCode);
+    
+    // опционально очищаем поле, но оставим для наглядности, можно очистить
+    // но не мешает пользователю увидеть введённый номер, оставим
+    // Дополнительно можно заблокировать повторную отправку на несколько секунд? проще не блокировать
+    // показать всплывашку
+    alert(`🎁 Дополнительный код ${leadCode} готов! Покажи на кассе.`);
+    // переходим на бонусный экран с лид-бонусом
+    showBonusScreen('lead', 'lead', leadCode);
+  }
+  
+  // инициализация событий и обработчиков
+  function bindEvents() {
+    // ----- Навигация по data-nav -----
+    document.querySelectorAll('[data-nav]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = btn.getAttribute('data-nav');
+        if (targetId) navigateTo(targetId);
+      });
+    });
+    
+    // ----- Главные кнопки home -----
+    const homeQuizBtn = document.querySelector('#home .btn[data-nav="quiz"]');
+    const homeWokBtn = document.querySelector('#home .btn[data-nav="wok"]');
+    const homePhotoBtn = document.querySelector('#home .btn[data-nav="photo"]');
+    if (homeQuizBtn) homeQuizBtn.addEventListener('click', () => navigateTo('quiz'));
+    if (homeWokBtn) homeWokBtn.addEventListener('click', () => navigateTo('wok'));
+    if (homePhotoBtn) homePhotoBtn.addEventListener('click', () => navigateTo('photo'));
+    
+    // ----- Квиз: выбор стиля -----
+    const quizOptions = document.querySelectorAll('#quiz .choice[data-quiz]');
+    quizOptions.forEach(opt => {
+      opt.addEventListener('click', (e) => {
+        const style = opt.getAttribute('data-quiz'); // spicy or mild
+        handleQuizChoice(style, opt);
+      });
+    });
+    
+    // ----- Вок: выбор мяса и кнопка завершения -----
+    const wokChoices = document.querySelectorAll('#wok .choice[data-wok]');
+    wokChoices.forEach(choice => {
+      choice.addEventListener('click', (e) => {
+        const meat = choice.getAttribute('data-wok'); // chicken / beef
+        selectWokMeat(meat, choice);
+      });
+    });
+    
+    const finishWokBtn = document.getElementById('finishWokBtn');
+    if (finishWokBtn) finishWokBtn.addEventListener('click', finishWokFlow);
+    
+    // ----- Фото-бонус -----
+    const photoBonusBtn = document.getElementById('photoBonusBtn');
+    if (photoBonusBtn) photoBonusBtn.addEventListener('click', finishPhotoFlow);
+    
+    // ----- Доп. бонус из бонус-экрана (кнопка "Ещё бонус") -----
+    const extraBonusBtn = document.getElementById('extraBonusBtn');
+    if (extraBonusBtn) {
+      extraBonusBtn.addEventListener('click', () => {
+        navigateTo('lead');
+        // сбросить предыдущий результат лида, чтобы при повторном показе скрыть старый код
+        const leadResultDiv = document.getElementById('leadResultArea');
+        if (leadResultDiv) leadResultDiv.classList.add('hidden');
+        const phoneField = document.getElementById('phoneInput');
+        if (phoneField) phoneField.value = '';
+      });
+    }
+    
+    // ----- Лид: сохранение и бонус -----
+    const saveLeadBtn = document.getElementById('saveLeadBtn');
+    if (saveLeadBtn) saveLeadBtn.addEventListener('click', saveLeadAndBonus);
+    
+    // сброс отображения лид-формы при входе
+    const leadContainer = document.getElementById('lead');
+    if (leadContainer) {
+      // наблюдатель: каждый раз при показе лид-карточки скрываем предыдущий результат
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mut) => {
+          if (mut.type === 'attributes' && mut.attributeName === 'class') {
+            if (!leadContainer.classList.contains('hidden')) {
+              const resultDiv = document.getElementById('leadResultArea');
+              if (resultDiv) resultDiv.classList.add('hidden');
+              const phoneInp = document.getElementById('phoneInput');
+              if (phoneInp) phoneInp.value = '';
+            }
+          }
+        });
+      });
+      observer.observe(leadContainer, { attributes: true });
+    }
+    
+    // обработка возврата на главную с помощью кнопок "домой"
+    // дополнительно сделаем, чтобы при переходе на home сбрасывались состояния выделений
+    const homeNav = document.querySelectorAll('[data-nav="home"]');
+    homeNav.forEach(btn => {
+      btn.addEventListener('click', () => {
+        resetWokSelection();
+        // также сброс выделения квиза
+        document.querySelectorAll('#quiz .choice').forEach(c => c.classList.remove('selected'));
+      });
+    });
+    
+    // Защита от случайного двойного нажатия на лид-кнопку (не блокируем, но сохраним только один раз - но каждый раз новый код, ок)
+    // Так же добавим эмуляцию бонуса для вока при первом заходе - без ошибок
+  }
+  
+  // Инициализация при полной загрузке DOM
+  document.addEventListener('DOMContentLoaded', () => {
+    bindEvents();
+    // дополнительная стилизация: сохраняем вок селект чистым при загрузке
+    resetWokSelection();
+    // если в localStorage есть последний бонус, можно не трогать, но пусть будет чисто
+    // для плавности покажем home по умолчанию
+    navigateTo('home');
+  });
+  
+  // также экспортируем пару глобальных функций для отладки (не обязательно)
+  window.debugReset = () => {
+    localStorage.removeItem('chicho_leads');
+    localStorage.removeItem('chicho_last_code');
+    console.log('🗑️ Данные лидов и кодов очищены');
+    alert('Тестовые данные удалены');
+  };
+  
+  // дополнительная подсказка: если пользователь нажал назад и снова в вок - сброс
+  window.resetWokSelection = resetWokSelection;
+</script>
+</body>
+</html>
